@@ -1,16 +1,16 @@
 import React from 'react';
 import {View, StyleSheet, Text, Alert, FlatList, Dimensions} from 'react-native';
-import {StackNavigator} from 'react-navigation';
 import { Button, ListItem } from 'react-native-elements';
 import { Location, Permissions } from 'expo';
 
+
+
+
 export default class Home extends React.Component {
-  static navigationOptions = {title: 'Home'};
 
   constructor(props) {
     super(props);
     this.state = {latitude:'', longitude:'', myplaces: []};
-
   }
 
   componentDidMount() {
@@ -105,6 +105,9 @@ export default class Home extends React.Component {
         renderItem={this.renderItem}
         style={{width: width}}
       />
+
+
+
 
 
 

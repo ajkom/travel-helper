@@ -8,7 +8,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 const db = SQLite.openDatabase('myplacesdb.db');
 
 export default class MyPlaces extends React.Component {
-  static navigationOptions = {title: 'My Places'};
+  static navigationOptions = {title: 'My places'};
 
   constructor(props) {
     super(props);
@@ -79,7 +79,7 @@ export default class MyPlaces extends React.Component {
         <View style={styles.container}>
 
           <FormLabel>PLACEFINDER</FormLabel>
-          <FormInput placeholder='Type in address'
+          <FormInput placeholder='Type in address or place'
             onChangeText={(address) => this.setState({address})}
             value={this.state.address}/>
 

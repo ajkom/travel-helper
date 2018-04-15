@@ -6,7 +6,7 @@ import Expo, { SQLite } from 'expo';
 const db = SQLite.openDatabase('moneydb.db');
 
 export default class Expenses extends React.Component {
-   static navigationOptions = {title: 'MY EXPENSES'};
+   static navigationOptions = {title: 'My expenses'};
 
   constructor(props) {
     super(props);
@@ -47,7 +47,7 @@ export default class Expenses extends React.Component {
       subtitle={item.category}
       title={item.amount}
       rightTitle={item.date}
-      onPress={() => this.deleteItem(item.id)}
+      onLongPress={() => this.deleteItem(item.id)}
     />
 
   )
@@ -68,8 +68,10 @@ export default class Expenses extends React.Component {
 
         <FormLabel>AMOUNT</FormLabel>
         <FormInput placeholder='Amount'
-        onChangeText={(amount) => this.setState({amount})}
+          onChangeText={(amount) => this.setState({amount})}
           value={this.state.amount}
+          keyboardType='numeric'
+
         />
 
         <FormLabel>CATEGORY</FormLabel>

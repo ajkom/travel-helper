@@ -1,14 +1,14 @@
 import React from 'react';
 import {StatusBar, StyleSheet, View, FlatList,  Dimensions} from 'react-native';
 import Expo, { SQLite } from 'expo';
-import {StackNavigator} from 'react-navigation';
+//import {StackNavigator} from 'react-navigation';
 import { FormInput, Header, FormLabel, Button, List, ListItem } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 const db = SQLite.openDatabase('myplacesdb.db');
 
 export default class MyPlaces extends React.Component {
-  static navigationOptions = {title: 'My places'};
+  static navigationOptions = {title: 'My places'}; 
 
   constructor(props) {
     super(props);

@@ -4,18 +4,24 @@ import { Button, ListItem } from 'react-native-elements';
 import { Location, Permissions } from 'expo';
 
 
-
-
 export default class Home extends React.Component {
+  static navigationOptions = {title: 'Home'};
+
 
   constructor(props) {
     super(props);
-    this.state = {latitude:'', longitude:'', myplaces: []};
+    this.state = {
+      latitude:'',
+      longitude:'',
+      weather: null,
+      conditions: ''
+    };
   }
 
   componentDidMount() {
     this.getLocation();
   }
+
 
   getLocation = async () => {
     //Check permission
@@ -31,6 +37,28 @@ export default class Home extends React.Component {
       });
     }
   };
+
+  fetchWeather = () => {
+    let lat = this.state.latitude;
+    let lon = this.state.longitude;
+    const API = '&APPID=983d8b821c4bb020e04735abd342e5c2'
+    const url = 'api.openweathermap.org/data/2.5/weather?lat='+lat+'&lon='+lon+API;
+
+    fetch(url)
+      .then((response) => response.json())
+      .then((responseData) => {
+        this.setState({
+          weather: responseData.results,
+          conditions: responseData.results.weather.main
+        })
+      })
+      .catch((error) => {
+        Alert.alert(error);
+      })
+  }
+
+
+
 
   showRestaurants = () => {
       let loc = this.state.latitude+','+this.state.longitude;
@@ -89,6 +117,10 @@ export default class Home extends React.Component {
 
     return(
       <View style={styles.container}>
+
+      <Text>{this.state.conditions}</Text>
+
+      <Button onPress={this.fetchWeather} title="weather" />
 
       <Button raised
         onPress={this.showRestaurants}

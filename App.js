@@ -13,18 +13,22 @@ import Diary from './screens/Diary.js';
 import Currency from './screens/home/Currency.js';
 import Finder from './screens/home/Finder.js';
 
-const Stack = StackNavigator({
+const StackPlaces = StackNavigator({
+  MyPlaces: {screen: MyPlaces},
+  Map: {screen: Map},
+});
+
+const StackHome = StackNavigator({
+  Home: {screen: Home},
   Currency: {screen: Currency},
-  Finder: {screen: Finder}
+  Finder: {screen: Finder},
 });
 
 
 
-
 const MyApp = TabNavigator({
-  Home: {screen: Home},
-  MyPlaces: {screen: MyPlaces},
-  Map: {screen: Map},
+  StackHome: {screen: StackHome},
+  StackPlaces: {screen: StackPlaces},
   Expenses: {screen: Expenses},
   Diary: {screen: Diary}
 }, {

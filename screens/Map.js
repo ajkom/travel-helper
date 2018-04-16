@@ -10,7 +10,6 @@ export default class Map extends React.Component {
 
   constructor(props) {
     super(props);
-    //this.state = this.getInitialState();
 
     this.state = {
           address: '',
@@ -24,29 +23,28 @@ export default class Map extends React.Component {
 
 componentDidMount() {
 
-
   const { params } = this.props.navigation.state;
-  const address = params.address;
+/*  const address = params.address;
   this.fetchAddress(address);
 
-  /*try {
+/*  try {
     const address = params.address;
     this.fetchAddress(address);
   }
   catch (error) {
     this.getLocation();
   }
+*/
 
-
-  if (params != null) {
+  //if (params != null) {
     const address = params.address;
     this.fetchAddress(address);
-  }
+  //}
 
-  else {
+  /*else {
     this.getLocation();
-  }
-  */
+  }*/
+
 }
 
   fetchAddress = (address) => {
@@ -57,7 +55,7 @@ componentDidMount() {
         .then((response) => response.json())
         .then((responseData) => {
             this.setState({
-                location: responseData.results[0].formatted_address,
+                address: responseData.results[0].formatted_address,
                 title: responseData.results[0].formatted_address,
                 latitude: responseData.results[0].geometry.location.lat,
                 longitude: responseData.results[0].geometry.location.lng,
@@ -81,10 +79,11 @@ componentDidMount() {
     else {
       let location = await Location.getCurrentPositionAsync({enableHighAccuracy:false});
       this.setState({
+
         latitude: location.coords.latitude,
         longitude: location.coords.longitude,
-        address: location.coords.formatted_address,
-        title: location.coords.formatted_address
+        //address: location.coords.formatted_address,
+        //title: location.coords.formatted_address
       });
     }
   };

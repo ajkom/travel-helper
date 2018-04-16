@@ -49,7 +49,6 @@ export default class Expenses extends React.Component {
       rightTitle={item.date}
       onLongPress={() => this.deleteItem(item.id)}
     />
-
   )
 
 

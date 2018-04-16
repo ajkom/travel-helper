@@ -10,22 +10,26 @@ export default class Map extends React.Component {
 
   constructor(props) {
     super(props);
+    //this.state = this.getInitialState();
 
     this.state = {
-        address: '',
-        latitude: 0,
-        longitude: 0,
-        latitudeDelta: 0.0322,
-        longitudeDelta: 0.0221,
-        title: '',
-      }
-
+          address: '',
+          latitude: 0,
+          longitude: 0,
+          latitudeDelta: 0.0322,
+          longitudeDelta: 0.0221,
+          title: '',
+    };
 }
 
 componentDidMount() {
-  const { params } = this.props.navigation.state;
 
-  try {
+
+  const { params } = this.props.navigation.state;
+  const address = params.address;
+  this.fetchAddress(address);
+
+  /*try {
     const address = params.address;
     this.fetchAddress(address);
   }
@@ -34,14 +38,15 @@ componentDidMount() {
   }
 
 
-  /*if (params != null) {
+  if (params != null) {
     const address = params.address;
     this.fetchAddress(address);
   }
 
   else {
     this.getLocation();
-  }*/
+  }
+  */
 }
 
   fetchAddress = (address) => {
@@ -63,6 +68,8 @@ componentDidMount() {
     .catch((error) => {
         Alert.alert(error);
     })
+
+    //this.resetState;
   }
 
   getLocation = async () => {
@@ -76,7 +83,8 @@ componentDidMount() {
       this.setState({
         latitude: location.coords.latitude,
         longitude: location.coords.longitude,
-        address: location.coords.formatted_address
+        address: location.coords.formatted_address,
+        title: location.coords.formatted_address
       });
     }
   };
@@ -99,26 +107,43 @@ componentDidMount() {
     .catch((error) => {
         Alert.alert(error);
     })
-}
+  }
+
+/*  getInitialState = () => {
+     const initialState = {
+           address: '',
+           latitude: 0,
+           longitude: 0,
+           latitudeDelta: 0.0322,
+           longitudeDelta: 0.0221,
+           title: '',
+     };
+     return initialState;
+ }
+
+  resetState = () => {
+     this.setState(this.getInitialState());
+  }*/
+
 
   render() {
     return (
-<View style={styles.container}>
-      <MapView
-          style={{ left:0, right: 0, top:0, bottom: 0, position: 'absolute' }}
-          region={{
-              latitude: this.state.latitude,
-              longitude: this.state.longitude,
-              latitudeDelta: this.state.latitudeDelta,
-              longitudeDelta: this.state.longitudeDelta,
-          }}>
+      <View style={styles.container}>
+        <MapView
+            style={{ left:0, right: 0, top:0, bottom: 0, position: 'absolute' }}
+            region={{
+                latitude: this.state.latitude,
+                longitude: this.state.longitude,
+                latitudeDelta: this.state.latitudeDelta,
+                longitudeDelta: this.state.longitudeDelta,
+            }}>
 
-          <MapView.Marker coordinate={{
-              latitude: this.state.latitude,
-              longitude: this.state.longitude,
-          }}
-            title={this.state.title}/>
-            </MapView>
+            <MapView.Marker coordinate={{
+                latitude: this.state.latitude,
+                longitude: this.state.longitude,
+            }}
+              title={this.state.title}/>
+          </MapView>
             <KeyboardAvoidingView behavior="padding" style={styles.search}>
               <TextInput
                 value={this.state.address}

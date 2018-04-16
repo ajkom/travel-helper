@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import {Text, View, StyleSheet} from 'react-native';
+import {Text, View, StyleSheet, FlatList} from 'react-native';
 import Expo, { SQLite } from 'expo';
-import { FormInput, FormLabel, Button, List, ListItem } from 'react-native-elements';
+import { FormInput, FormLabel, Button, ListItem } from 'react-native-elements';
 /*import { Table, TableWrapper, Row, Rows, Col, Cols, Cell } from 'react-native-table-component';*/
 
 const db = SQLite.openDatabase('mynotesdb.db');
@@ -10,7 +10,12 @@ export default class Diary extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {date: '', place: '', note: '', mynotes: [], tableHead: []};
+    this.state = {
+      date: '',
+      place: '',
+      note: '',
+      mynotes: []
+      };
   }
 
   componentDidMount() {
@@ -23,7 +28,7 @@ export default class Diary extends React.Component {
   saveItem = () => {
     db.transaction(tx => {
         tx.executeSql('insert into mynotes (date, place, note) values (?, ?, ?)', [this.state.date, this.state.place, this.state.note]);
-      }, null, this.updateList)
+      }, null, this.updateList);
   }
 
   updateList = () => {
@@ -42,16 +47,30 @@ export default class Diary extends React.Component {
     )
   }
 
+  /*renderItem =  ({item}) => {
+    return(
 
 
+  )
+}*/
 
+  listSeparator = () => {
+     return (
+       <View
+         style={{
+           height: 5,
+           width: "80%",
+           backgroundColor: "#fff",
+           marginLeft: "10%"
+         }}
+       />
+     );
+ };
 
 
   render() {
     return (
       <View style={styles.container}>
-        <Text>Hello World </Text>
-
         <Button onPress={this.saveItem} title="SAVE" />
 
 
@@ -73,6 +92,16 @@ export default class Diary extends React.Component {
             onChangeText={(note) => this.setState({note})}
             value={this.state.note}/>
 
+            <FlatList
+              data={this.state.mynotes}
+              //style={{width: width}}
+              keyExtractor={item => item.id}
+              renderItem={({item}) => <Text onPress={() => this.deleteItem(item.id)}>{item.note}</Text>
+            //  <Text onPress={() => this.deleteItem(item.id)}>bought</Text>
+          }
+              ItemSeparatorComponent={this.listSeparator}
+            />
+
 
 
       </View>
@@ -81,12 +110,14 @@ export default class Diary extends React.Component {
 }
 
 const styles = StyleSheet.create({
-    container: {
+    /*container: {
         flex: 1,
         backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'center',
         marginLeft: '5%',
-    },
-    text: { margin: 6 }
+    },*/
+    container: { flex: 1, padding: 16, paddingTop: 30, backgroundColor: '#fff' },
+    head: { height: 40, backgroundColor: '#f1f8ff' },
+  text: { margin: 6 }
 });

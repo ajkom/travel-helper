@@ -58,18 +58,6 @@ export default class MyPlaces extends React.Component {
 }
 
 
-  listSeparator = () => {
-    return (
-      <View
-        style={{
-          height: 5,
-          width: "80%",
-          backgroundColor: "#fff",
-          marginLeft: "10%"
-        }}
-      />
-    );
-  };
 
   render() {
     let width = Dimensions.get('window').width;
@@ -95,7 +83,6 @@ export default class MyPlaces extends React.Component {
             style={{width: width}}
             keyExtractor={item => item.id}
             renderItem={this.renderItem}
-            ItemSeparatorComponent={this.listSeparator}
           />
 
           </View>

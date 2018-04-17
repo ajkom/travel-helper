@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {Text, View, StyleSheet, FlatList} from 'react-native';
 import Expo, { SQLite } from 'expo';
-import { FormInput, FormLabel, Button, ListItem } from 'react-native-elements';
+import { FormInput, FormLabel, Button, ListItem, Card } from 'react-native-elements';
 /*import { Table, TableWrapper, Row, Rows, Col, Cols, Cell } from 'react-native-table-component';*/
 
 const db = SQLite.openDatabase('mynotesdb.db');
@@ -11,9 +11,11 @@ export default class Diary extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      date: '',
-      place: '',
-      note: '',
+    //  note:{
+        date: '',
+        place: '',
+        note: '',
+  //    },
       mynotes: []
       };
   }
@@ -47,25 +49,23 @@ export default class Diary extends React.Component {
     )
   }
 
-  /*renderItem =  ({item}) => {
+  renderItem =  ({item}) => {
     return(
-
-
+      <Card>
+      {
+        this.state.mynotes.map((n, i) => {
+          return(
+            <View key={i}>
+              <Text>{n.date}, {n.place}:{"\n\n"}{n.note}</Text>
+            </View>
+            );
+          })
+      }
+      </Card>
   )
-}*/
+}
 
-  listSeparator = () => {
-     return (
-       <View
-         style={{
-           height: 5,
-           width: "80%",
-           backgroundColor: "#fff",
-           marginLeft: "10%"
-         }}
-       />
-     );
- };
+
 
 
   render() {
@@ -92,15 +92,19 @@ export default class Diary extends React.Component {
             onChangeText={(note) => this.setState({note})}
             value={this.state.note}/>
 
-            <FlatList
+          <Text></Text>
+
+          <FlatList
               data={this.state.mynotes}
               //style={{width: width}}
               keyExtractor={item => item.id}
-              renderItem={({item}) => <Text onPress={() => this.deleteItem(item.id)}>{item.note}</Text>
+              renderItem={this.renderItem}
             //  <Text onPress={() => this.deleteItem(item.id)}>bought</Text>
-          }
-              ItemSeparatorComponent={this.listSeparator}
+              //ItemSeparatorComponent={this.listSeparator}
             />
+
+
+
 
 
 

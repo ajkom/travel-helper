@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, StyleSheet, Text, Alert, FlatList, Dimensions} from 'react-native';
+import {View, StyleSheet, Text, Alert, FlatList, Dimensions, Image} from 'react-native';
 import { Button, ListItem } from 'react-native-elements';
 import { Location, Permissions } from 'expo';
 
@@ -13,9 +13,12 @@ export default class Home extends React.Component {
     this.state = {
       latitude:'',
       longitude:'',
-      weather: null,
-      conditions: ''
+      tempr:'',
+      descr:'',
+      weather:null
     };
+
+    this.fetchWeather.bind(this);
   }
 
   componentDidMount() {
@@ -35,29 +38,29 @@ export default class Home extends React.Component {
         latitude: location.coords.latitude,
         longitude: location.coords.longitude,
       });
+      this.fetchWeather();
     }
   };
 
   fetchWeather = () => {
     let lat = this.state.latitude;
     let lon = this.state.longitude;
-    const API = '&APPID=983d8b821c4bb020e04735abd342e5c2'
-    const url = 'api.openweathermap.org/data/2.5/weather?lat='+lat+'&lon='+lon+API;
+    const API = 'APPID=983d8b821c4bb020e04735abd342e5c2'
+    const url = `https://api.openweathermap.org/data/2.5/weather?units=metric&lat=${lat}&lon=${lon}&${API}`;
 
     fetch(url)
       .then((response) => response.json())
       .then((responseData) => {
         this.setState({
-          weather: responseData.results,
-          conditions: responseData.results.weather.main
+          weather: responseData
         })
       })
       .catch((error) => {
         Alert.alert(error);
       })
+
+      console.log(this.state.weather.weather[0].icon)
   }
-
-
 
 
   showRestaurants = () => {
@@ -112,15 +115,33 @@ export default class Home extends React.Component {
   }
 
 
+
+
   render() {
+    // prevent page from loading before weather info is fetched
+    if (this.state.weather == null)
+      return null;
+
+    // get the window width value
     let width = Dimensions.get('window').width;
+
+    //weather
+    let weather = this.state.weather;
+    let iconurl = `http://openweathermap.org/img/w/${weather.weather[0].icon}.png`;
 
     return(
       <View style={styles.container}>
+      <Text>Weather today</Text>
 
-      <Text>{this.state.conditions}</Text>
+      <Text>{weather.main.temp}°C, {weather.weather[0].description}</Text>
+      <Text>Wind: {weather.wind.speed} m/s</Text>
+      <Image
+        source={{uri: iconurl}}
+        style={{width: 60, height: 60}}
+      />
 
-      <Button onPress={this.fetchWeather} title="weather" />
+
+    {/*  <Button onPress={this.showWeather} title="weather" />*/}
 
       <Button raised
         onPress={this.showRestaurants}

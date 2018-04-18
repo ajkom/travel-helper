@@ -103,6 +103,7 @@ export default class Home extends React.Component {
 
   renderItem =  ({item}) => {
     const { navigate } = this.props.navigation;
+
     return(
       <ListItem
         title={item.name}
@@ -118,6 +119,7 @@ export default class Home extends React.Component {
 
 
   render() {
+    const { navigate } = this.props.navigation;
     // prevent page from loading before weather info is fetched
     if (this.state.weather == null)
       return null;
@@ -141,12 +143,13 @@ export default class Home extends React.Component {
       />
 
 
-    {/*  <Button onPress={this.showWeather} title="weather" />*/}
-
       <Button raised
-        onPress={this.showRestaurants}
-        title="Restaurants nearby"
-        buttonStyle={{width: width, backgroundColor:'peru', marginBottom:'2%'}} />
+        onPress={() => navigate('Finder', {lat: this.state.latitude, lon: this.state.longitude})}
+        title="Find nearby"
+        buttonStyle={{width: width, backgroundColor:'peru', marginBottom:'2%'}}
+      />
+
+
       <Button raised
         onPress={this.showHotels}
         title="Hotels nearby"

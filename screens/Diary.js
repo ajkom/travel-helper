@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import {Text, View, StyleSheet, FlatList} from 'react-native';
+import {Text, View, StyleSheet, Image, FlatList} from 'react-native';
 import Expo, { SQLite } from 'expo';
-import { FormInput, FormLabel, Button, ListItem, Card } from 'react-native-elements';
-/*import { Table, TableWrapper, Row, Rows, Col, Cols, Cell } from 'react-native-table-component';*/
+import { FormInput, FormLabel, Button, ListItem} from 'react-native-elements';
+import { Container, Header, Content, Card, CardItem, Body, DeckSwiper } from 'native-base';
 
 const db = SQLite.openDatabase('mynotesdb.db');
 
@@ -11,11 +11,9 @@ export default class Diary extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-    //  note:{
-        date: '',
-        place: '',
-        note: '',
-  //    },
+      date: '',
+      place: '',
+      note: '',
       mynotes: []
       };
   }
@@ -50,22 +48,21 @@ export default class Diary extends React.Component {
   }
 
   renderItem =  ({item}) => {
-    return(
-      <Card>
-      {
-        this.state.mynotes.map((n, i) => {
-          return(
-            <View key={i}>
-              <Text>{n.date}, {n.place}:{"\n\n"}{n.note}</Text>
-            </View>
-            );
-          })
-      }
-      </Card>
-  )
-}
-
-
+      return(
+        <View>
+          <Card>
+            <CardItem>
+                <Body>
+                  <Text onLongPress={() => this.deleteItem(item.id)}>{item.date}, {item.place}</Text>
+                </Body>
+            </CardItem>
+            <CardItem cardBody>
+              <Text>{item.note}</Text>
+            </CardItem>
+          </Card>
+        </View>
+      )
+  }
 
 
   render() {
@@ -92,23 +89,22 @@ export default class Diary extends React.Component {
             onChangeText={(note) => this.setState({note})}
             value={this.state.note}/>
 
-          <Text></Text>
-
           <FlatList
-              data={this.state.mynotes}
-              //style={{width: width}}
-              keyExtractor={item => item.id}
-              renderItem={this.renderItem}
-            //  <Text onPress={() => this.deleteItem(item.id)}>bought</Text>
-              //ItemSeparatorComponent={this.listSeparator}
-            />
+            data={this.state.mynotes}
+            //style={{width: width}}
+            keyExtractor={item => item.id}
+            renderItem={this.renderItem}
+          />
+
+          {/*  <DeckSwiper style={{boderColor:'black', borderWidth:1}}
+            dataSource={this.state.mynotes}
+            key={item => item.id}
+            renderItem={this.renderItem}
+          />
+*/}
 
 
-
-
-
-
-      </View>
+          </View>
     )
   }
 }

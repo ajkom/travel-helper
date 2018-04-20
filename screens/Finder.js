@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import {View, Text, FlatList} from 'react-native';
-import { FormInput, ListItem, Button} from 'react-native-elements';
+import {  ListItem, Button} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import {StackNavigator} from 'react-navigation';
+
 
 
 export default class Finder extends React.Component {
@@ -12,32 +14,34 @@ export default class Finder extends React.Component {
 
     this.state={
       myplaces: [],
-      searchItem: ''
     }
+  }
+
+  componentDidMount() {
+    const { params } = this.props.navigation.state;
+    let keyword = params.keyword.toLowerCase();
+    let location = params.lat+','+params.lon;
+
+    console.log(keyword);
+
+    this.findPlaces(keyword, location);
   }
 
 
 
-  findPlaces = () => {
-    const { params } = this.props.navigation.state;
+  findPlaces = (searchkey, location) => {
+    const apikey = 'AIzaSyClulqjPepQjs9IWY8qfUlcUIHeFyr_2Ys';
 
-    let loc = params.lat+','+params.lon;
-    let apikey = 'AIzaSyClulqjPepQjs9IWY8qfUlcUIHeFyr_2Ys';
-    let searchkey = this.state.searchItem;
-
-    const url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${loc}&type=${searchkey}&radius=500&key=${apikey}`;
-
+    const url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${location}&type=${searchkey}&radius=500&key=${apikey}`;
 
 
     fetch(url)
       .then((response) => response.json())
-
       .then((responseData) => {
         this.setState({
           myplaces: responseData.results
         })
       })
-      .then(console.log(this.state.myplaces))
       .catch((error) => {
         Alert.alert(error);
       })
@@ -47,12 +51,12 @@ export default class Finder extends React.Component {
     const { navigate } = this.props.navigation;
 
     return(
+
       <ListItem
         title={item.name}
         subtitle={item.rating}
         rightTitle={"on map"}
         onPress={() => navigate('Map', {address: item.address})}
-        onLongPress={() => this.deleteItem(item.id)}
       />
     )
   }
@@ -63,17 +67,7 @@ export default class Finder extends React.Component {
       <View>
 
 
-    <Text>Hello World 2</Text>
-
-    <FormInput placeholder='Type in the key word'
-      onChangeText={(searchItem) => this.setState({searchItem})}
-      value={this.state.searchItem}/>
-
-      <Button
-        icon={{ name: "save" }}
-        onPress={this.findPlaces}
-        title="SAVE"
-      />
+    <Text>{this.props.navigation.state.keyword} nearby</Text>
 
     <FlatList
       data={this.state.myplaces}

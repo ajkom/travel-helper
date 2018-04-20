@@ -2,16 +2,19 @@ import React, { Component } from 'react';
 import {StyleSheet, View} from 'react-native';
 import {StackNavigator, TabNavigator} from 'react-navigation';
 
-
 import MyPlaces from './screens/MyPlaces.js';
 import Map from './screens/Map.js';
 import Home from './screens/Home.js';
 import Expenses from './screens/Expenses.js';
 import Diary from './screens/Diary.js';
+import Finder from './screens/Finder.js';
 
+import { YellowBox } from 'react-native';
 
-import Currency from './screens/home/Currency.js';
-import Finder from './screens/home/Finder.js';
+  YellowBox.ignoreWarnings([
+    'Warning: componentWillMount is deprecated',
+    'Warning: componentWillReceiveProps is deprecated',
+  ]);
 
 const StackPlaces = StackNavigator({
   MyPlaces: {screen: MyPlaces},
@@ -20,7 +23,6 @@ const StackPlaces = StackNavigator({
 
 const StackHome = StackNavigator({
   Home: {screen: Home},
-  Currency: {screen: Currency},
   Finder: {screen: Finder},
 });
 

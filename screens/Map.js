@@ -83,7 +83,7 @@ componentDidMount() {
         latitude: location.coords.latitude,
         longitude: location.coords.longitude,
         //address: location.coords.formatted_address,
-        //title: location.coords.formatted_address
+        title: "You are here"
       });
     }
   };
@@ -143,19 +143,20 @@ componentDidMount() {
             }}
               title={this.state.title}/>
           </MapView>
-            <KeyboardAvoidingView behavior="padding" style={styles.search}>
-              <TextInput
-                value={this.state.address}
-                onChangeText={(address) => this.setState({address})}
-                placeholder= 'Where to?'
-                style={{
-                  height:40,
-                  backgroundColor:'white',
-                }} />
+          <KeyboardAvoidingView behavior="padding" style={styles.search}>
+            <TextInput
+              //value={this.state.address}
+              onChangeText={(address) => this.setState({address})}
+              placeholder= 'Where to?'
+              style={{
+                height:40,
+                backgroundColor:'white',
+              }}
+            />
 
-                        <Button onPress={this.search} title="SHOW" />
-                        <Button onPress={this.getLocation} title="MY LOCATION" />
-            </KeyboardAvoidingView>
+            <Button onPress={this.search} title="SHOW" />
+            <Button onPress={this.getLocation} title="MY LOCATION" />
+          </KeyboardAvoidingView>
 </View>
 
     );

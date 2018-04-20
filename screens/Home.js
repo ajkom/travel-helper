@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, StyleSheet, Text, Alert, FlatList, Dimensions, Image} from 'react-native';
-import { Button, ListItem } from 'react-native-elements';
+import { Button, FormInput, } from 'react-native-elements';
 import { Location, Permissions } from 'expo';
 
 
@@ -15,7 +15,8 @@ export default class Home extends React.Component {
       longitude:'',
       tempr:'',
       descr:'',
-      weather:null
+      weather:null,
+      keyword: ''
     };
 
     this.fetchWeather.bind(this);
@@ -63,67 +64,11 @@ export default class Home extends React.Component {
   }
 
 
-  showRestaurants = () => {
-      let loc = this.state.latitude+','+this.state.longitude;
-      let key = 'AIzaSyClulqjPepQjs9IWY8qfUlcUIHeFyr_2Ys';
-
-      const url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' + loc+'&type=restaurant&radius=500&key='+key;
-
-      fetch(url)
-        .then((response) => response.json())
-        .then((responseData) => {
-          this.setState({
-            myplaces: responseData.results
-          })
-        })
-        .catch((error) => {
-          Alert.alert(error);
-        })
-  }
-
-  showHotels = () => {
-      let loc = this.state.latitude+','+this.state.longitude;
-      let key = 'AIzaSyClulqjPepQjs9IWY8qfUlcUIHeFyr_2Ys';
-
-      const url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' + loc+'&type=hotel&radius=500&key='+key;
-
-      fetch(url)
-        .then((response) => response.json())
-        .then((responseData) => {
-          this.setState({
-            myplaces: responseData.results
-          })
-        })
-        .catch((error) => {
-          Alert.alert(error);
-        })
-  }
-
-
-
-  renderItem =  ({item}) => {
-    const { navigate } = this.props.navigation;
-
-    return(
-      <ListItem
-        title={item.name}
-        subtitle={item.rating}
-        rightTitle={"on map"}
-        onPress={() => navigate('Map', {address: item.address})}
-        onLongPress={() => this.deleteItem(item.id)}
-      />
-    )
-  }
-
-
-
-
   render() {
     const { navigate } = this.props.navigation;
     // prevent page from loading before weather info is fetched
     if (this.state.weather == null)
       return null;
-
     // get the window width value
     let width = Dimensions.get('window').width;
 
@@ -133,6 +78,8 @@ export default class Home extends React.Component {
 
     return(
       <View style={styles.container}>
+      <Text>Welcome to the Travel Helper!{'\n\n'}</Text>
+
       <Text>Weather today</Text>
 
       <Text>{weather.main.temp}°C, {weather.weather[0].description}</Text>
@@ -142,35 +89,21 @@ export default class Home extends React.Component {
         style={{width: 60, height: 60}}
       />
 
+      <FormInput placeholder='What are you looking for?'
+        onChangeText={(keyword) => this.setState({keyword})}
+        value={this.state.keyword}
+      />
+
 
       <Button raised
-        onPress={() => navigate('Finder', {lat: this.state.latitude, lon: this.state.longitude})}
+        icon={{ name: "search" }}
+        onPress={() => navigate('Finder', {lat: this.state.latitude, lon: this.state.longitude, keyword: this.state.keyword})}
         title="Find nearby"
         buttonStyle={{width: width, backgroundColor:'peru', marginBottom:'2%'}}
       />
 
-
-      <Button raised
-        onPress={this.showHotels}
-        title="Hotels nearby"
-        buttonStyle={{width: width, backgroundColor:'teal'}} />
-
-      <FlatList
-        data={this.state.myplaces}
-        keyExtractor={item => item.id}
-        renderItem={this.renderItem}
-        style={{width: width}}
-      />
-
-
-
-
-
-
-
       </View>
-      /*{
-      }*/
+
 
 
     )
@@ -183,6 +116,6 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#fff',
         alignItems: 'center',
-        justifyContent: 'center',
+        //justifyContent: 'center',
     }
 });

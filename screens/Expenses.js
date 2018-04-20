@@ -57,7 +57,7 @@ export default class Expenses extends React.Component {
 
     return (
       <View style={styles.container}>
-        <View>
+        <View >
 
         <FormLabel>DATE</FormLabel>
         <FormInput placeholder='mm/dd/yyyy'

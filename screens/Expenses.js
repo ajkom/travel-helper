@@ -2,6 +2,7 @@ import React from 'react';
 import {StyleSheet, Text, TextInput, View, FlatList, Alert, Dimensions} from 'react-native';
 import { FormInput, Header, FormLabel, Button,  ListItem } from 'react-native-elements';
 import Expo, { SQLite } from 'expo';
+import DatePicker from 'react-native-datepicker'
 
 const db = SQLite.openDatabase('moneydb.db');
 
@@ -45,7 +46,7 @@ export default class Expenses extends React.Component {
   renderItem =  ({item}) => (
     <ListItem
       subtitle={item.category}
-      title={item.amount}
+      title={item.amount.toString()}
       rightTitle={item.date}
       onLongPress={() => this.deleteItem(item.id)}
     />
@@ -60,10 +61,24 @@ export default class Expenses extends React.Component {
         <View >
 
         <FormLabel>DATE</FormLabel>
-        <FormInput placeholder='mm/dd/yyyy'
+        <DatePicker
+          placeholder="select date"
+          mode="date"
+          date={this.state.date}
+          confirmBtnText="Confirm"
+          cancelBtnText="Cancel"
+          showIcon={false}
+          onDateChange={(date) => this.setState({date})}
+          style={{}}
+        />
+
+
+
+
+        {/*<FormInput placeholder='mm/dd/yyyy'
           onChangeText={(date) => this.setState({date})}
           value={this.state.date}
-        />
+        />*/}
 
         <FormLabel>AMOUNT</FormLabel>
         <FormInput placeholder='Amount'

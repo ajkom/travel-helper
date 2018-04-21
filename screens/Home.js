@@ -1,6 +1,6 @@
 import React from 'react';
-import {View, StyleSheet, Text, Alert, FlatList, Dimensions, Image} from 'react-native';
-import { Button, FormInput, } from 'react-native-elements';
+import { View, StyleSheet, Text, Alert, FlatList, Dimensions, Picker, Image } from 'react-native';
+import { Button, FormInput, FormLabel } from 'react-native-elements';
 import { Location, Permissions } from 'expo';
 
 
@@ -16,7 +16,7 @@ export default class Home extends React.Component {
       tempr:'',
       descr:'',
       weather:null,
-      keyword: ''
+      keyword: 'cafe'
     };
 
     this.fetchWeather.bind(this);
@@ -89,10 +89,30 @@ export default class Home extends React.Component {
         style={{width: 60, height: 60}}
       />
 
-      <FormInput placeholder='What are you looking for?'
+      <FormLabel>{"I'm looking for"} </FormLabel>
+
+
+      <Picker
+        selectedValue={this.state.keyword}
+        style={{ height: 50, width: 300 }}
+        onValueChange={(itemValue, itemIndex) => this.setState({keyword: itemValue})}>
+        <Picker.Item label="Cafes" value="cafe" />
+        <Picker.Item label="Restaurants" value="restaurant"/>
+        <Picker.Item label="Stores" value="store"/>
+        <Picker.Item label="Hospitals" value="hospital"/>
+        <Picker.Item label="Night clubs" value="night_club"/>
+        <Picker.Item label="Bars" value="bar"/>
+        <Picker.Item label="Art galleries" value="art_gallery"/>
+        <Picker.Item label="Churches" value="church"/>
+        <Picker.Item label="Shopping malls" value="shopping_mall"/>
+        <Picker.Item label="Post offices" value="post_office"/>
+
+      </Picker>
+
+    {/*  <FormInput placeholder='What are you looking for?'
         onChangeText={(keyword) => this.setState({keyword})}
         value={this.state.keyword}
-      />
+      />*/}
 
 
       <Button raised

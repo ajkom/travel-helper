@@ -3,6 +3,8 @@ import {Text, View, StyleSheet, Image, FlatList} from 'react-native';
 import Expo, { SQLite } from 'expo';
 import { FormInput, FormLabel, Button, ListItem} from 'react-native-elements';
 import { Container, Header, Content, Card, CardItem, Body, DeckSwiper } from 'native-base';
+import DatePicker from 'react-native-datepicker'
+
 
 const db = SQLite.openDatabase('mynotesdb.db');
 
@@ -72,22 +74,31 @@ export default class Diary extends React.Component {
 
 
         <FormLabel>DATE</FormLabel>
-        <FormInput
-          placeholder='date'
-          onChangeText={(date) => this.setState({date})}
-          value={this.state.date}/>
+        <DatePicker
+          placeholder="select date"
+          mode="date"
+          format="DD-MM-YYYY"
+          date={this.state.date}
+          confirmBtnText="Confirm"
+          cancelBtnText="Cancel"
+          showIcon={false}
+          onDateChange={(date) => this.setState({date})}
+          style={{}}
+        />
 
           <FormLabel>PLACE</FormLabel>
           <FormInput
             placeholder='place'
             onChangeText={(place) => this.setState({place})}
-            value={this.state.place}/>
+            value={this.state.place}
+          />
 
-          <FormLabel>note </FormLabel>
+          <FormLabel>NOTES </FormLabel>
           <FormInput multiline
             placeholder='notes'
             onChangeText={(note) => this.setState({note})}
-            value={this.state.note}/>
+            value={this.state.note}
+          />
 
           <FlatList
             data={this.state.mynotes}

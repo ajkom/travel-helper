@@ -18,34 +18,18 @@ export default class Map extends React.Component {
           latitudeDelta: 0.0322,
           longitudeDelta: 0.0221,
           title: '',
+          markersArray:[]
     };
 }
 
 componentDidMount() {
 
   const { params } = this.props.navigation.state;
-/*  const address = params.address;
+  const address = params.address;
+
   this.fetchAddress(address);
-
-/*  try {
-    const address = params.address;
-    this.fetchAddress(address);
-  }
-  catch (error) {
-    this.getLocation();
-  }
-*/
-
-  //if (params != null) {
-    const address = params.address;
-    this.fetchAddress(address);
-  //}
-
-  /*else {
-    this.getLocation();
-  }*/
-
 }
+
 
   fetchAddress = (address) => {
     const key = 'AIzaSyClulqjPepQjs9IWY8qfUlcUIHeFyr_2Ys';
@@ -56,7 +40,7 @@ componentDidMount() {
         .then((responseData) => {
             this.setState({
                 address: responseData.results[0].formatted_address,
-                title: responseData.results[0].formatted_address,
+                title: this.props.navigation.state.name,
                 latitude: responseData.results[0].geometry.location.lat,
                 longitude: responseData.results[0].geometry.location.lng,
                 latitudeDelta: responseData.results[0].geometry.viewport.northeast.lat - responseData.results[0].geometry.viewport.southwest.lat,
@@ -102,27 +86,13 @@ componentDidMount() {
                 latitudeDelta: responseData.results[0].geometry.viewport.northeast.lat - responseData.results[0].geometry.viewport.southwest.lat,
                 longitudeDelta: responseData.results[0].geometry.viewport.northeast.lng - responseData.results[0].geometry.viewport.southwest.lng,
             })
+            console.log(responseData)
         })
     .catch((error) => {
         Alert.alert(error);
     })
   }
 
-/*  getInitialState = () => {
-     const initialState = {
-           address: '',
-           latitude: 0,
-           longitude: 0,
-           latitudeDelta: 0.0322,
-           longitudeDelta: 0.0221,
-           title: '',
-     };
-     return initialState;
- }
-
-  resetState = () => {
-     this.setState(this.getInitialState());
-  }*/
 
 
   render() {

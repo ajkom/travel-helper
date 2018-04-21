@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
-import {View, Text, FlatList} from 'react-native';
+import {Alert, View, Text, FlatList} from 'react-native';
 import {  ListItem, Button} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {StackNavigator} from 'react-navigation';
-
-
 
 export default class Finder extends React.Component {
   static navigationOptions = {title: 'Find nearby'};
@@ -27,8 +25,6 @@ export default class Finder extends React.Component {
     this.findPlaces(keyword, location);
   }
 
-
-
   findPlaces = (searchkey, location) => {
     const apikey = 'AIzaSyClulqjPepQjs9IWY8qfUlcUIHeFyr_2Ys';
 
@@ -49,33 +45,35 @@ export default class Finder extends React.Component {
 
   renderItem =  ({item}) => {
     const { navigate } = this.props.navigation;
+    let location = this.state.myplaces[0].geometry.location.lat +','+ this.state.myplaces[0].geometry.location.lng
 
     return(
-
       <ListItem
         title={item.name}
         subtitle={item.rating}
         rightTitle={"on map"}
-        onPress={() => navigate('Map', {address: item.address})}
+        onPress={() => {navigate('Map', {address: location, name: this.state.myplaces[0].name})}}
+        onLongPress={() => {navigate('MyPlaces', {item:item.name})} }
       />
     )
   }
 
-
   render() {
+    const { params } = this.props.navigation.state;
+
+    if (params == null) return null;
+
     return (
       <View>
 
+        <Text>{params.keyword.toUpperCase()}S AROUND YOU</Text>
 
-    <Text>{this.props.navigation.state.keyword} nearby</Text>
-
-    <FlatList
-      data={this.state.myplaces}
-      keyExtractor={item => item.id}
-      renderItem={this.renderItem}
-      style={{width:'100%'}}
-    />
-
+        <FlatList
+          data={this.state.myplaces}
+          keyExtractor={item => item.id}
+          renderItem={this.renderItem}
+          style={{width:'100%'}}
+        />
 
     </View>
   )}

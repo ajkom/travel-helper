@@ -8,7 +8,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 const db = SQLite.openDatabase('myplacesdb.db');
 
 export default class MyPlaces extends React.Component {
-  static navigationOptions = {title: 'My places'}; 
+  static navigationOptions = {title: 'My places'};
 
   constructor(props) {
     super(props);
@@ -20,7 +20,17 @@ export default class MyPlaces extends React.Component {
     db.transaction(tx => {
       tx.executeSql('create table if not exists myplaces (id integer primary key not null, address text);');
     });
-    this.updateList();
+
+    const { params } = this.props.navigation.state;
+
+    // if user is navigating from Finder page, save the parameter before updating the list
+    if (params != null) {
+      let address = params.item;
+      this.setState({address});
+      this.saveItem();
+    } else {
+      this.updateList();
+    }
   }
 
   saveItem = () => {
@@ -54,9 +64,7 @@ export default class MyPlaces extends React.Component {
         onPress={() => navigate('Map', {address: item.address})}
         onLongPress={() => this.deleteItem(item.id)}
       />
-)
-}
-
+  )}
 
 
   render() {

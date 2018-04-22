@@ -17,8 +17,7 @@ export default class Map extends React.Component {
           longitude: 0,
           latitudeDelta: 0.0322,
           longitudeDelta: 0.0221,
-          title: '',
-          markersArray:[]
+          title: ''
     };
 }
 
@@ -40,7 +39,7 @@ componentDidMount() {
         .then((responseData) => {
             this.setState({
                 address: responseData.results[0].formatted_address,
-                title: this.props.navigation.state.name,
+                title: responseData.results[0].formatted_address,
                 latitude: responseData.results[0].geometry.location.lat,
                 longitude: responseData.results[0].geometry.location.lng,
                 latitudeDelta: responseData.results[0].geometry.viewport.northeast.lat - responseData.results[0].geometry.viewport.southwest.lat,
@@ -50,8 +49,6 @@ componentDidMount() {
     .catch((error) => {
         Alert.alert(error);
     })
-
-    //this.resetState;
   }
 
   getLocation = async () => {
@@ -66,7 +63,6 @@ componentDidMount() {
 
         latitude: location.coords.latitude,
         longitude: location.coords.longitude,
-        //address: location.coords.formatted_address,
         title: "You are here"
       });
     }

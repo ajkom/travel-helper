@@ -27,6 +27,7 @@
     "react-native-elements": "^0.19.1",
     "react-native-image-picker": "^0.26.7",
     "react-native-table-component": "^1.1.8",
-    "react-navigation": "^1.5.11"
+    "react-navigation": "^1.5.11",
+    "rn-sliding-up-panel": "^1.2.0"
   }
 }

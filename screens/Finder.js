@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {Alert, View, Text, FlatList} from 'react-native';
-import {  ListItem, Button} from 'react-native-elements';
+import { ListItem, Button} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {StackNavigator} from 'react-navigation';
 
@@ -67,6 +67,7 @@ export default class Finder extends React.Component {
       <View>
 
         <Text>{params.keyword.toUpperCase()}S AROUND YOU</Text>
+        <Text>long-press to save to My Places</Text>
 
         <FlatList
           data={this.state.myplaces}

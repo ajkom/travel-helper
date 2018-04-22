@@ -8,6 +8,8 @@ import Home from './screens/Home.js';
 import Expenses from './screens/Expenses.js';
 import Diary from './screens/Diary.js';
 import Finder from './screens/Finder.js';
+import CameraPage from './screens/CameraPage.js';
+
 
 import { YellowBox } from 'react-native';
 
@@ -26,13 +28,18 @@ const StackHome = StackNavigator({
   Finder: {screen: Finder},
 });
 
+const StackDiary = StackNavigator({
+  Diary: {screen: Diary},
+  CameraPage: {screen: CameraPage}
+})
+
 
 
 const MyApp = TabNavigator({
   StackHome: {screen: StackHome},
   StackPlaces: {screen: StackPlaces},
   Expenses: {screen: Expenses},
-  Diary: {screen: Diary}
+  StackDiary: {screen: StackDiary}
 }, {
   animationEnabled: true,
 })

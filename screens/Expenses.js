@@ -72,14 +72,6 @@ export default class Expenses extends React.Component {
           style={{}}
         />
 
-
-
-
-        {/*<FormInput placeholder='mm/dd/yyyy'
-          onChangeText={(date) => this.setState({date})}
-          value={this.state.date}
-        />*/}
-
         <FormLabel>AMOUNT</FormLabel>
         <FormInput placeholder='Amount'
           onChangeText={(amount) => this.setState({amount})}

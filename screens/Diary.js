@@ -49,7 +49,9 @@ export default class Diary extends React.Component {
   takePicture = async () => {
     if (this.camera) {
       let photo = await this.camera.takePictureAsync();
-      this.setState({photo:photo.uri});
+      this.setState({
+        photo:photo.uri,
+      });
     }
   };
 
@@ -142,13 +144,28 @@ export default class Diary extends React.Component {
         </View>
       </Container>*/}
 
-      <Button title='Add a note' onPress={() => this.setState({notePanelVisible: true})} />
+      <Button raised title='Add a note'
+        onPress={() => this.setState({notePanelVisible: true})}
+         rightIcon={{name:'add'}}
+         buttonStyle={{
+           width: width,
+           backgroundColor:'#5d737e'
+         }}
+      />
+
         <SlidingUpPanel
           visible={this.state.notePanelVisible}
           onRequestClose={() => this.setState({notePanelVisible: false})}>
 
           <View style={styles.container}>
-            <Button onPress={this.saveItem} title="SAVE" />
+            <Button raised
+             onPress={this.saveItem}
+             title="SAVE"
+             rightIcon={{name:'note-add'}}
+             buttonStyle={{
+               width: width,
+               backgroundColor:'#5d737e'
+             }} />
 
             <FormLabel labelStyle={styles.label}>DATE</FormLabel>
             <DatePicker
@@ -192,10 +209,17 @@ export default class Diary extends React.Component {
             />
 
             <FormLabel labelStyle={styles.label}>PHOTO</FormLabel>
-            <Button onPress={() => this.setState({cameraActive: '1'})} title="Take a picture" />
+            <Button raised rounded
+              onPress={() => this.setState({cameraActive: '1'})}
+              title="Take a picture"
+              rightIcon={{name:'photo-camera'}}
+              buttonStyle={{
+                backgroundColor:'#5d737e',
+                width:150
+              }}/>
 
         <Camera
-          style={{flex: Number(this.state.cameraActive)}}
+          //style={{flex: 1}}
           type={this.state.type}
           ref={ref => { this.camera = ref; }}>
           <View
@@ -204,6 +228,7 @@ export default class Diary extends React.Component {
               backgroundColor: 'transparent',
               flexDirection: 'row',
             }}>
+
             <TouchableOpacity
               style={{
                 flex: 0.1,
@@ -222,6 +247,7 @@ export default class Diary extends React.Component {
                 {' '}Flip{' '}
               </Text>
             </TouchableOpacity>
+
             <TouchableOpacity
               style={{ flex: 0.9, alignSelf: 'flex-start', alignItems: 'center' }}
               onPress={this.takePicture}>
@@ -234,26 +260,12 @@ export default class Diary extends React.Component {
       </SlidingUpPanel>
 
 
-          </View>
+    </View>
     )
   }
 }
 
 
-
-/*const cards = [
-  {
-    text: 'Card two',
-    name: 'two',
-    image:'https://static3.cbrimages.com/wp-content/uploads/2017/11/iron-man-tony-stark-robert-downey-jr-1920x1080.jpg?q=35&w=864&h=486&fit=crop',
-  },
-  {
-    text: 'Card two',
-    name: 'two',
-    image: 'https://static0.cbrimages.com/wp-content/uploads/2017/03/tony-stark-header.jpg',
-  },
-];
-*/
 
 
 const styles = StyleSheet.create({
@@ -266,8 +278,10 @@ const styles = StyleSheet.create({
     },*/
     container: {
       flex: 1,
-      padding: 16,
-      paddingTop: 30,
+      //padding: 16,
+    //  paddingTop: 30,
+      alignItems: 'center',
+    //  justifyContent: 'center',
       backgroundColor: '#fff'
     },
     head: {

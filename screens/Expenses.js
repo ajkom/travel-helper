@@ -1,13 +1,18 @@
 import React from 'react';
 import {StyleSheet, Text, TextInput, View, FlatList, Alert, Dimensions} from 'react-native';
-import { FormInput, Header, FormLabel, Button,  ListItem } from 'react-native-elements';
+import { FormInput, Header, FormLabel, Button, Icon, ListItem } from 'react-native-elements';
 import Expo, { SQLite } from 'expo';
 import DatePicker from 'react-native-datepicker'
 
 const db = SQLite.openDatabase('moneydb.db');
 
 export default class Expenses extends React.Component {
-   static navigationOptions = {title: 'My expenses'};
+
+   static navigationOptions = {
+
+     tabBarLabel: 'My expenses',
+     tabBarIcon: ({tintColor}) => <Icon type='font-awesome' name='money' color={tintColor} />
+   };
 
   constructor(props) {
     super(props);
@@ -45,9 +50,10 @@ export default class Expenses extends React.Component {
 
   renderItem =  ({item}) => (
     <ListItem
+      title={item.amount}
       subtitle={item.category}
-      title={item.amount.toString()}
       rightTitle={item.date}
+      hideChevron
       onLongPress={() => this.deleteItem(item.id)}
     />
   )
@@ -58,46 +64,63 @@ export default class Expenses extends React.Component {
 
     return (
       <View style={styles.container}>
-        <View >
 
-        <FormLabel>DATE</FormLabel>
+        <FormLabel labelStyle={styles.label}>CATEGORY</FormLabel>
+        <FormInput placeholder='I spent money on...'
+          onChangeText={(category) => this.setState({category})}
+          value={this.state.category}
+          inputStyle={styles.input}
+        />
+
+        <FormLabel labelStyle={styles.label}>DATE</FormLabel>
         <DatePicker
-          placeholder="select date"
+          style={{
+            width:width,
+            padding: 0,
+            margin: 0
+          }}
+          placeholder="When?"
           mode="date"
           date={this.state.date}
           confirmBtnText="Confirm"
           cancelBtnText="Cancel"
           showIcon={false}
           onDateChange={(date) => this.setState({date})}
-          style={{}}
+          customStyles={{
+            placeholderText:styles.input,
+            dateInput: {
+              borderWidth:0,
+              borderBottomWidth: 1
+            },
+            dateText:styles.input
+          }}
         />
 
-        <FormLabel>AMOUNT</FormLabel>
-        <FormInput placeholder='Amount'
-          onChangeText={(amount) => this.setState({amount})}
-          value={this.state.amount}
+        <FormLabel labelStyle={styles.label}>AMOUNT</FormLabel>
+        <FormInput placeholder='How much?'
+          onChangeText={(amount) => this.setState({amount:amount.toString()})}
+          value={this.state.amount.toString()}
           keyboardType='numeric'
-
+          inputStyle={styles.input}
         />
 
-        <FormLabel>CATEGORY</FormLabel>
-        <FormInput placeholder='I spent money on...'
-          onChangeText={(category) => this.setState({category})}
-          value={this.state.category}
+        <Button raised
+          onPress={this.saveItem}
+          title="SAVE"
+          buttonStyle={{
+            width: width,
+            backgroundColor:'#5d737e'
+           }}
+          rightIcon={{ name: "save" }}
         />
-
-        <Button onPress={this.saveItem} title="SAVE" buttonStyle={{width: width}}/>
 
 
         <FlatList
           data={this.state.money}
           style={{width: width}}
-          keyExtractor={item => item.id}
+          keyExtractor={item => item.id.toString()}
           renderItem={this.renderItem}
         />
-
-
-          </View>
 
       </View>
     );
@@ -108,15 +131,18 @@ export default class Expenses extends React.Component {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginLeft: '5%',
+      flex: 1,
+      //backgroundColor: '#fff',
+      alignItems: 'center',
+      justifyContent: 'center',
+      margin: '2%',
     },
-    inputs: {
-      backgroundColor:'red',
-      position:"absolute",
-
+    label: {
+      fontSize:16,
+    },
+    input: {
+      fontSize:16,
+      marginRight: 2,
+      textAlign: 'center'
     }
 });

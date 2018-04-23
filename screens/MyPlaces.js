@@ -2,13 +2,16 @@ import React from 'react';
 import {StatusBar, StyleSheet, View, FlatList,  Dimensions} from 'react-native';
 import Expo, { SQLite } from 'expo';
 //import {StackNavigator} from 'react-navigation';
-import { FormInput, Header, FormLabel, Button, List, ListItem } from 'react-native-elements';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import { FormInput, Header, FormLabel, Button, List, ListItem, Icon } from 'react-native-elements';
 
 const db = SQLite.openDatabase('myplacesdb.db');
 
 export default class MyPlaces extends React.Component {
-  static navigationOptions = {title: 'My places'};
+  static navigationOptions = {
+    title: 'My places',
+    tabBarLabel: 'My places',
+    tabBarIcon: ({tintColor}) => <Icon name='place' color={tintColor} />
+  };
 
   constructor(props) {
     super(props);
@@ -74,22 +77,29 @@ export default class MyPlaces extends React.Component {
       <View style={styles.container}>
         <View style={styles.container}>
 
-          <FormLabel>PLACEFINDER</FormLabel>
+          <FormLabel labelStyle={{fontSize:16}}>PLACEFINDER</FormLabel>
           <FormInput placeholder='Type in address or place'
             onChangeText={(address) => this.setState({address})}
-            value={this.state.address}/>
+            value={this.state.address}
+            inputStyle={{
+              fontSize:16,
+              textAlign: 'center'}}
+          />
 
-          <Button
+          <Button raised
             icon={{ name: "save" }}
             onPress={this.saveItem}
             title="SAVE"
-            buttonStyle={{width: width}}
+            buttonStyle={{
+              width: width,
+              backgroundColor:'#5d737e'
+             }}
           />
 
           <FlatList
             data={this.state.myplaces}
             style={{width: width}}
-            keyExtractor={item => item.id}
+            keyExtractor={item => item.id.toString()}
             renderItem={this.renderItem}
           />
 

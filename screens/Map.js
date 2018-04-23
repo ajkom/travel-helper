@@ -1,12 +1,17 @@
 import React from 'react';
-import { StyleSheet, Text, View, TextInput, Button, Alert, KeyboardAvoidingView} from 'react-native';
+import { StyleSheet, Text, Button, TextInput, View, Alert, KeyboardAvoidingView, Dimensions} from 'react-native';
 import { Location, Permissions, MapView } from 'expo';
+import {Icon } from 'react-native-elements';
 
 import {StackNavigator} from 'react-navigation';
 
 export default class Map extends React.Component {
 
-  static navigationOptions = {title: 'Map'};
+  static navigationOptions = {
+    title: 'Map',
+    tabBarLabel: 'Map',
+    tabBarIcon: ({tintColor}) => <Icon type='foundation' name='map' color={tintColor} />
+  };
 
   constructor(props) {
     super(props);
@@ -17,7 +22,7 @@ export default class Map extends React.Component {
           longitude: 0,
           latitudeDelta: 0.0322,
           longitudeDelta: 0.0221,
-          title: ''
+          title: '',
     };
 }
 
@@ -90,8 +95,8 @@ componentDidMount() {
   }
 
 
-
   render() {
+
     return (
       <View style={styles.container}>
         <MapView
@@ -109,38 +114,42 @@ componentDidMount() {
             }}
               title={this.state.title}/>
           </MapView>
-          <KeyboardAvoidingView behavior="padding" style={styles.search}>
             <TextInput
-              //value={this.state.address}
               onChangeText={(address) => this.setState({address})}
               placeholder= 'Where to?'
-              style={{
-                height:40,
-                backgroundColor:'white',
-              }}
+              style={styles.search}
             />
 
-            <Button onPress={this.search} title="SHOW" />
-            <Button onPress={this.getLocation} title="MY LOCATION" />
-          </KeyboardAvoidingView>
-</View>
+            <Button title="search"
+              onPress={this.search}
+              />
+
+            <Button title='locate'
+              onPress={this.getLocation}
+            />
+
+        </View>
 
     );
   }
 
 }
 
+    let width = Dimensions.get('window').width;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   search: {
-  position: 'absolute',
-  bottom:5,
-  width: 300,
-},
+  //  position: 'absolute',
+  //  bottom:0,
+    paddingLeft:'5%',
+    height:40,
+    margin: '5%',
+    width: width*0.9,
+    backgroundColor:'white',
+    fontSize:16,
+  },
 });

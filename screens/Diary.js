@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, Image, FlatList, TouchableOpacity, Alert } from 'react-native';
+import { Text, View, StyleSheet, Image, FlatList, TouchableOpacity, Alert, Dimensions } from 'react-native';
 import Expo, { SQLite, Camera, Permissions } from 'expo';
-import { FormInput, FormLabel, Button } from 'react-native-elements';
-import { Container, Header, Content, Card, CardItem, Body, Thumbnail, Icon, DeckSwiper, Left } from 'native-base';
+import { FormInput, FormLabel, Button, Icon } from 'react-native-elements';
+import { Container, Header, Content, Card, CardItem, Body, Thumbnail, DeckSwiper, Left } from 'native-base';
 import DatePicker from 'react-native-datepicker';
 import SlidingUpPanel from 'rn-sliding-up-panel';
 
@@ -10,7 +10,11 @@ const db = SQLite.openDatabase('mynotesdb.db');
 
 export default class Diary extends React.Component {
 
-  static navigationOptions = {title: 'Diary'};
+  static navigationOptions = {
+    title: 'My diary',
+    tabBarLabel: 'My diary',
+    tabBarIcon: ({tintColor}) => <Icon type= 'material-community' name='notebook' color={tintColor} />
+  };
 
   constructor(props) {
     super(props);
@@ -97,16 +101,17 @@ export default class Diary extends React.Component {
 
   render() {
     const { navigate } = this.props.navigation;
-    console.log(this.state.mynotes);
+    let width = Dimensions.get('window').width;
 
-    if (typeof(this.state.mynotes)=='undefined' || this.state.mynotes == null) return null;
+
+    //if (typeof(this.state.mynotes)=='undefined' || this.state.mynotes == null) return null;
 
     return (
       <View style={styles.container}>
       <FlatList
         data={this.state.mynotes}
         //style={{width: width}}
-        keyExtractor={item => item.id}
+        keyExtractor={item => item.id.toString()}
         renderItem={this.renderItem}
       />
     {/*  <Container>
@@ -145,9 +150,9 @@ export default class Diary extends React.Component {
           <View style={styles.container}>
             <Button onPress={this.saveItem} title="SAVE" />
 
-            <FormLabel>DATE</FormLabel>
+            <FormLabel labelStyle={styles.label}>DATE</FormLabel>
             <DatePicker
-              placeholder="select date"
+              placeholder="Select date"
               mode="date"
               format="DD-MM-YYYY"
               date={this.state.date}
@@ -155,28 +160,38 @@ export default class Diary extends React.Component {
               cancelBtnText="Cancel"
               showIcon={false}
               onDateChange={(date) => this.setState({date})}
-              style={{}}
+              customStyles={{
+                placeholderText:styles.input,
+                dateInput: {
+                  borderWidth:0,
+                  borderBottomWidth: 1
+                },
+                dateText:styles.input
+              }}
+              style={{
+                width:width,
+                padding: 0,
+                margin: 0
+              }}
             />
 
-            <FormLabel>PLACE</FormLabel>
+            <FormLabel labelStyle={styles.label}>PLACE</FormLabel>
             <FormInput
               placeholder='place'
               onChangeText={(place) => this.setState({place})}
               value={this.state.place}
+              inputStyle={styles.input}
             />
 
-            <FormLabel>NOTES </FormLabel>
+            <FormLabel labelStyle={styles.label}>NOTES </FormLabel>
             <FormInput multiline
               placeholder='notes'
               onChangeText={(note) => this.setState({note})}
               value={this.state.note}
+              inputStyle={styles.input}
             />
 
-
-
-
-
-            <FormLabel>PHOTO</FormLabel>
+            <FormLabel labelStyle={styles.label}>PHOTO</FormLabel>
             <Button onPress={() => this.setState({cameraActive: '1'})} title="Take a picture" />
 
         <Camera
@@ -219,12 +234,6 @@ export default class Diary extends React.Component {
       </SlidingUpPanel>
 
 
-
-
-
-
-
-
           </View>
     )
   }
@@ -255,7 +264,25 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         marginLeft: '5%',
     },*/
-    container: { flex: 1, padding: 16, paddingTop: 30, backgroundColor: '#fff' },
-    head: { height: 40, backgroundColor: '#f1f8ff' },
-  text: { margin: 6 }
+    container: {
+      flex: 1,
+      padding: 16,
+      paddingTop: 30,
+      backgroundColor: '#fff'
+    },
+    head: {
+      height: 40,
+      backgroundColor: '#f1f8ff'
+     },
+    text: {
+      margin: 6
+    },
+    label: {
+      fontSize:16,
+    },
+    input: {
+      fontSize:16,
+      marginRight: 2,
+      textAlign: 'center'
+    }
 });

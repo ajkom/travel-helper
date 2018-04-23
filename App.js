@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {StyleSheet, View} from 'react-native';
-import {StackNavigator, TabNavigator} from 'react-navigation';
+import {StackNavigator, TabNavigator, TabBarBottom} from 'react-navigation';
 
 import MyPlaces from './screens/MyPlaces.js';
 import Map from './screens/Map.js';
@@ -16,34 +16,76 @@ import { YellowBox } from 'react-native';
   YellowBox.ignoreWarnings([
     'Warning: componentWillMount is deprecated',
     'Warning: componentWillReceiveProps is deprecated',
+    'Warning: componentWillUpdate is deprecated'
   ]);
 
 const StackPlaces = StackNavigator({
   MyPlaces: {screen: MyPlaces},
   Map: {screen: Map},
+}, {
+  navigationOptions: {
+  headerStyle: {
+    backgroundColor: '#124559',
+  },
+  headerTitleStyle:{
+    color: 'white'
+  }}
 });
 
 const StackHome = StackNavigator({
   Home: {screen: Home},
   Finder: {screen: Finder},
+}, {
+  navigationOptions: {
+  headerStyle: {
+    backgroundColor: '#124559',
+  },
+  headerTitleStyle:{
+    color: 'white'
+  }}
+
 });
 
 const StackDiary = StackNavigator({
   Diary: {screen: Diary},
   CameraPage: {screen: CameraPage}
+  }, {
+    navigationOptions: {
+    headerStyle: {
+      backgroundColor: '#124559',
+    },
+    headerTitleStyle:{
+      color: 'white'
+    }}
 })
 
+const StackExpenses = StackNavigator({
+  Expenses: {screen: Expenses}
+}, {
+  navigationOptions: {
+    title: 'My expenses',
+    headerStyle: {backgroundColor: '#124559'},
+    headerTitleStyle:{color: 'white'}
+  }})
 
 
 const MyApp = TabNavigator({
   StackHome: {screen: StackHome},
   StackPlaces: {screen: StackPlaces},
-  Expenses: {screen: Expenses},
+  StackExpenses: {screen:StackExpenses},
   StackDiary: {screen: StackDiary}
-}, {
+  },{
   animationEnabled: true,
-})
-
+  tabBarPosition: 'bottom',
+  tabBarOptions: {
+    showIcon: true,
+    labelStyle: {
+      fontSize: 12,
+    },
+    activeBackgroundColor: '#124559',
+    inactiveBackgroundColor: '#01161e'
+  },
+  })
 
 
 
@@ -60,4 +102,5 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+
 });

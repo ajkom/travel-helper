@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
 import {Alert, View, Text, FlatList} from 'react-native';
-import { ListItem, Button} from 'react-native-elements';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import { ListItem, Button, Icon} from 'react-native-elements';
 import {StackNavigator} from 'react-navigation';
 
 export default class Finder extends React.Component {
-  static navigationOptions = {title: 'Find nearby'};
+  static navigationOptions = {
+    title: 'Find nearby',
+    tabBarLabel: 'Find nearby',
+    tabBarIcon: ({tintColor}) => <Icon name='search' color={tintColor} />
+  };
 
   constructor(props){
     super(props);

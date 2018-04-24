@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import {Alert, View, Text, FlatList} from 'react-native';
-import { ListItem, Button, Icon} from 'react-native-elements';
+import {Alert, View, FlatList, StyleSheet} from 'react-native';
+import { ListItem, Button, Icon, Text, FormLabel} from 'react-native-elements';
 import {StackNavigator} from 'react-navigation';
 
 export default class Finder extends React.Component {
@@ -52,9 +52,14 @@ export default class Finder extends React.Component {
 
     return(
       <ListItem
-        title={item.name}
-        subtitle={item.rating}
+        title={
+          <View>
+          <Text style={{fontSize:16, paddingLeft: 10}}>{item.name}</Text>
+          </View>
+        }
+        subtitle={`rating: ${item.rating}`}
         rightTitle={"on map"}
+        subtitleStyle={{fontSize:14}}
         onPress={() => {navigate('Map', {address: location, name: this.state.myplaces[0].name})}}
         onLongPress={() => {navigate('MyPlaces', {item:item.name})} }
       />
@@ -67,10 +72,10 @@ export default class Finder extends React.Component {
     if (params == null) return null;
 
     return (
-      <View>
+      <View style={styles.container}>
 
-        <Text>{params.keyword.toUpperCase()}S AROUND YOU</Text>
-        <Text>long-press to save to My Places</Text>
+        <Text h4 style={{padding: 5 }}>{params.keyword.toUpperCase()}S AROUND YOU</Text>
+        <FormLabel labelStyle={{fontSize:16, paddingBottom: 5}}>long-press to save to My Places</FormLabel>
 
         <FlatList
           data={this.state.myplaces}
@@ -82,3 +87,12 @@ export default class Finder extends React.Component {
     </View>
   )}
 }
+
+const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: '#f7f7f9',
+      alignItems: 'center',
+      //justifyContent: 'center',
+    },
+});

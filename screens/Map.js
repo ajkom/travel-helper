@@ -1,7 +1,7 @@
 import React from 'react';
-import { StyleSheet, Text, Button, TextInput, View, Alert, KeyboardAvoidingView, Dimensions} from 'react-native';
+import { StyleSheet, Text, TextInput, View, Alert, KeyboardAvoidingView, Dimensions} from 'react-native';
 import { Location, Permissions, MapView } from 'expo';
-import {Icon } from 'react-native-elements';
+import {Icon, Button } from 'react-native-elements';
 
 import {StackNavigator} from 'react-navigation';
 
@@ -120,12 +120,28 @@ componentDidMount() {
               style={styles.search}
             />
 
-            <Button title="search"
+            <Button raised rounded
               onPress={this.search}
+              buttonStyle={{
+                backgroundColor:'white',
+                padding: 10,
+              //  bottom:0
+                position: 'absolute',
+                left:0
+              }}
+              icon={{name:"search", color:'#007AFF'}}
               />
 
-            <Button title='locate'
+            <Button raised rounded
               onPress={this.getLocation}
+              buttonStyle={{
+                backgroundColor:'white',
+                //width: 50,
+                padding: 10,
+                position: 'absolute',
+                right:0
+              }}
+              icon={{name:"my-location", color:'#007AFF'}}
             />
 
         </View>
@@ -140,7 +156,7 @@ componentDidMount() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#fbfbfc',
   },
   search: {
   //  position: 'absolute',

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, Image, FlatList, TouchableOpacity, Alert, Dimensions } from 'react-native';
-import Expo, { SQLite, Camera, Permissions } from 'expo';
-import { FormInput, FormLabel, Button, Icon } from 'react-native-elements';
+import {  View, StyleSheet, Image, FlatList, TouchableOpacity, Alert, Dimensions } from 'react-native';
+import Expo, { SQLite, Camera, Permissions, FileSystem } from 'expo';
+import { Text, FormInput, FormLabel, Button, Icon } from 'react-native-elements';
 import { Card, CardItem, Body, } from 'native-base';
 import DatePicker from 'react-native-datepicker';
 import SlidingUpPanel from 'rn-sliding-up-panel';
@@ -53,17 +53,20 @@ export default class Diary extends React.Component {
   takePicture = async () => {
     if (this.camera) {
       let photo = await this.camera.takePictureAsync();
-      //this.copyFromCache(photo.uri);
-      this.setState({
-        photo:photo.uri,
-        cameraDisplay: 'none'
-      });
+      this.copyFromCache(photo.uri);
+      this.setState({cameraDisplay: 'none'});
     }
   };
 
   copyFromCache = async (cached) => {
-    let photo = await Expo.FileSystem.copyAsync(cached);
-    this.setState({photo});
+    const filename = new Date().getTime() + '.jpg';
+    const image = Expo.FileSystem.documentDirectory + filename;
+
+   await Expo.FileSystem.copyAsync({
+        from: cached,
+        to: image
+   });
+    this.setState({photo:image});
   }
 
   saveItem = () => {
@@ -94,17 +97,23 @@ export default class Diary extends React.Component {
   renderItem =  ({item}) => {
       return(
         <View>
-          <Card>
-            <CardItem>
-                <Body>
-                  <Text onLongPress={() => this.deleteItem(item.id)}>{item.date}, {item.place}</Text>
-                </Body>
+          <Card style={{}}>
+            <CardItem header bordered style={{backgroundColor:'#bcd9b9'}}>
+              <Text style={styles.cardHeader}
+              onLongPress={() => this.deleteItem(item.id)}>
+              {item.date}, {item.place}
+              </Text>
             </CardItem>
             <CardItem cardBody>
-              <Text>{item.note}</Text>
+              <Text style={styles.cardText}>{item.note}</Text>
+            </CardItem>
+            <CardItem cardBody>
               <Image
                 source={{uri:item.photo}}
-                style={{width:200, height:100}}
+                style={{
+                  width:width*0.8, height:width*0.8,
+                  margin: 25
+                }}
                />
             </CardItem>
           </Card>
@@ -116,7 +125,7 @@ export default class Diary extends React.Component {
     const { navigate } = this.props.navigation;
     //let width = Dimensions.get('window').width;
 
-    const { width, height } = Dimensions.get('window');
+
 
     return (
       <View style={styles.container}>
@@ -132,7 +141,7 @@ export default class Diary extends React.Component {
            rightIcon={{name:'add'}}
            buttonStyle={{
              width: width,
-             backgroundColor:'#5d737e'
+             backgroundColor:'#79b473'
            }}
         />
 
@@ -156,6 +165,7 @@ export default class Diary extends React.Component {
                 flex: 1,
                 backgroundColor: 'transparent',
                 flexDirection: 'row',
+                justifyContent:'space-between',
               }}>
               <TouchableOpacity
                 style={{
@@ -170,19 +180,20 @@ export default class Diary extends React.Component {
                       : Camera.Constants.Type.back,
                   });
                 }}>
-                <Text
-                  style={{ fontSize: 18, marginBottom: 10, color: 'white' }}>
-                  {' '}Flip{' '}
-                </Text>
+
+                <Icon size={40} type = 'ionicon' color='white' name='ios-reverse-camera' />
               </TouchableOpacity>
 
               <TouchableOpacity
                 style={{
-                  flex: 1,
+                  flex: 0.1,
                   alignSelf: 'stretch',
-                  alignItems: 'center' }}
+                  //alignItems: 'flex-end' 
+                }}
                 onPress={this.takePicture}>
-                <Text> SNAP </Text>
+
+                <Icon size={40} type = 'material-community' color='white' name='camera-iris' />
+
               </TouchableOpacity>
             </View>
           </Camera>
@@ -193,7 +204,7 @@ export default class Diary extends React.Component {
            rightIcon={{name:'note-add'}}
            buttonStyle={{
              width: width,
-             backgroundColor:'#5d737e'
+             backgroundColor:'#79b473'
            }}
           />
 
@@ -208,7 +219,10 @@ export default class Diary extends React.Component {
             showIcon={false}
             onDateChange={(date) => this.setState({date})}
             customStyles={{
-              placeholderText:styles.input,
+              placeholderText:{
+                color: '#86939e',
+                fontSize: 16
+              },
               dateInput: {
                 borderWidth:0,
                 borderBottomWidth: 1
@@ -245,8 +259,9 @@ export default class Diary extends React.Component {
             title="Take a picture"
             rightIcon={{name:'photo-camera'}}
             buttonStyle={{
-              backgroundColor:'#5d737e',
-              width:150
+              backgroundColor:'#79b473',
+              width:150,
+              margin:10,
             }} />
 
       </View>
@@ -257,20 +272,14 @@ export default class Diary extends React.Component {
     )
   }
 }
+const { width, height } = Dimensions.get('window');
 
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#fbfbfc',
     alignItems:'center'
-  },
-  head: {
-    height: 40,
-    backgroundColor: '#f1f8ff'
-   },
-  text: {
-    margin: 6
   },
   label: {
     fontSize:16,
@@ -278,6 +287,17 @@ const styles = StyleSheet.create({
   input: {
     fontSize:16,
     marginRight: 2,
-    textAlign: 'center'
+    textAlign: 'center',
+    color: '#86939e'
+  },
+  cardHeader: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#2d2d2d'
+  },
+  cardText: {
+    margin:10,
+    fontSize:16,
+    color: '#2d2d2d'
   }
 });

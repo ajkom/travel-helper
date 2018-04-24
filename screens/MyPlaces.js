@@ -1,7 +1,6 @@
 import React from 'react';
-import {StatusBar, StyleSheet, View, FlatList,  Dimensions} from 'react-native';
+import { Text, StatusBar, StyleSheet, View, FlatList,  Dimensions} from 'react-native';
 import Expo, { SQLite } from 'expo';
-//import {StackNavigator} from 'react-navigation';
 import { FormInput, Header, FormLabel, Button, List, ListItem, Icon } from 'react-native-elements';
 
 const db = SQLite.openDatabase('myplacesdb.db');
@@ -62,8 +61,13 @@ export default class MyPlaces extends React.Component {
     const { navigate } = this.props.navigation;
     return(
       <ListItem
-        title={item.address}
+        title={
+          <View>
+          <Text style={{fontSize:16, paddingLeft: 10}}>{item.address}</Text>
+          </View>
+        }
         rightTitle={"show on map"}
+        subtitleStyle={{fontSize:14}}
         onPress={() => navigate('Map', {address: item.address})}
         onLongPress={() => this.deleteItem(item.id)}
       />
@@ -87,12 +91,12 @@ export default class MyPlaces extends React.Component {
           />
 
           <Button raised
-            icon={{ name: "save" }}
+            rightIcon={{ name: "save" }}
             onPress={this.saveItem}
             title="SAVE"
             buttonStyle={{
               width: width,
-              backgroundColor:'#5d737e'
+              backgroundColor:'#79b473'
              }}
           />
 
@@ -116,7 +120,7 @@ export default class MyPlaces extends React.Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: '#fbfbfc',
         alignItems: 'center',
         justifyContent: 'center',
     }

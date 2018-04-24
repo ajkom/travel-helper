@@ -2,7 +2,8 @@ import React from 'react';
 import {StyleSheet, Text, TextInput, View, FlatList, Alert, Dimensions} from 'react-native';
 import { FormInput, Header, FormLabel, Button, Icon, ListItem } from 'react-native-elements';
 import Expo, { SQLite } from 'expo';
-import DatePicker from 'react-native-datepicker'
+import DatePicker from 'react-native-datepicker';
+import SlidingUpPanel from 'rn-sliding-up-panel';
 
 const db = SQLite.openDatabase('moneydb.db');
 
@@ -16,7 +17,13 @@ export default class Expenses extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {date: '', amount: '', category: '', shopping: []};
+    this.state = {
+      date: '',
+      amount: '',
+      category: '',
+      shopping: [],
+      panelVisible: false,
+    };
   }
 
   componentDidMount() {
@@ -30,6 +37,8 @@ export default class Expenses extends React.Component {
     db.transaction(tx => {
         tx.executeSql('insert into money (date, amount, category) values (?, ?, ?)', [this.state.date, this.state.amount, this.state.category]);
       }, null, this.updateList)
+
+      this.setState({panelVisible: false})
   }
 
   updateList = () => {
@@ -51,6 +60,8 @@ export default class Expenses extends React.Component {
   renderItem =  ({item}) => (
     <ListItem
       title={item.amount}
+      titleStyle={{fontSize:16}}
+      subtitleStyle={{fontSize:14}}
       subtitle={item.category}
       rightTitle={item.date}
       hideChevron
@@ -65,6 +76,28 @@ export default class Expenses extends React.Component {
     return (
       <View style={styles.container}>
 
+      <Button raised title='ADD'
+        onPress={() => this.setState({panelVisible: true})}
+         rightIcon={{name:'add'}}
+         buttonStyle={{
+           width: width,
+           backgroundColor:'#79b473'
+         }}
+      />
+
+      <FlatList
+        data={this.state.money}
+        style={{width: width}}
+        keyExtractor={item => item.id.toString()}
+        renderItem={this.renderItem}
+      />
+
+      <SlidingUpPanel
+        visible={this.state.panelVisible}
+        onRequestClose={() => this.setState({panelVisible: false})}>
+
+        <View style={styles.container}>
+
         <FormLabel labelStyle={styles.label}>CATEGORY</FormLabel>
         <FormInput placeholder='I spent money on...'
           onChangeText={(category) => this.setState({category})}
@@ -77,7 +110,7 @@ export default class Expenses extends React.Component {
           style={{
             width:width,
             padding: 0,
-            margin: 0
+            margin: 0,
           }}
           placeholder="When?"
           mode="date"
@@ -87,7 +120,10 @@ export default class Expenses extends React.Component {
           showIcon={false}
           onDateChange={(date) => this.setState({date})}
           customStyles={{
-            placeholderText:styles.input,
+            placeholderText:{
+              color: '#86939e',
+              fontSize: 16
+            },
             dateInput: {
               borderWidth:0,
               borderBottomWidth: 1
@@ -109,19 +145,13 @@ export default class Expenses extends React.Component {
           title="SAVE"
           buttonStyle={{
             width: width,
-            backgroundColor:'#5d737e'
+            backgroundColor:'#79b473'
            }}
           rightIcon={{ name: "save" }}
         />
 
-
-        <FlatList
-          data={this.state.money}
-          style={{width: width}}
-          keyExtractor={item => item.id.toString()}
-          renderItem={this.renderItem}
-        />
-
+        </View>
+      </SlidingUpPanel>
       </View>
     );
   }
@@ -132,17 +162,18 @@ export default class Expenses extends React.Component {
 const styles = StyleSheet.create({
     container: {
       flex: 1,
-      //backgroundColor: '#fff',
+      backgroundColor: '#fbfbfc',
       alignItems: 'center',
-      justifyContent: 'center',
-      margin: '2%',
+      //justifyContent: 'center',
+      //margin: '2%',
     },
     label: {
       fontSize:16,
     },
     input: {
       fontSize:16,
-      marginRight: 2,
-      textAlign: 'center'
+      textAlign: 'center',
+      color: '#86939e'
+    //  margin:0
     }
 });

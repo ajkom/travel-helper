@@ -20,7 +20,7 @@ export default class Home extends React.Component {
       tempr:'',
       descr:'',
       weather:null,
-      keyword: 'cafe'
+      keyword: 'cafe',
     };
 
     this.fetchWeather.bind(this);
@@ -101,7 +101,9 @@ export default class Home extends React.Component {
           title="FIND NEARBY"
           buttonStyle={{
             width: 200,
-            backgroundColor:'#5d737e',
+        //    backgroundColor:'#5d737e',
+            backgroundColor:'#79b473'
+
           }}
         />
 
@@ -134,7 +136,8 @@ export default class Home extends React.Component {
 const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: '#fcfcfc',
+      backgroundColor: '#fbfbfc',
+      // d8dbe2
       alignItems: 'center',
       //justifyContent: 'center',
     },

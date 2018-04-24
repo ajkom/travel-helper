@@ -8,8 +8,6 @@ import Home from './screens/Home.js';
 import Expenses from './screens/Expenses.js';
 import Diary from './screens/Diary.js';
 import Finder from './screens/Finder.js';
-import CameraPage from './screens/CameraPage.js';
-
 
 import { YellowBox } from 'react-native';
 
@@ -48,7 +46,6 @@ const StackHome = StackNavigator({
 
 const StackDiary = StackNavigator({
   Diary: {screen: Diary},
-  CameraPage: {screen: CameraPage}
   }, {
     navigationOptions: {
     headerStyle: {

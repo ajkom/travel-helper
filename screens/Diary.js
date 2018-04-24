@@ -166,12 +166,11 @@ export default class Diary extends React.Component {
                 backgroundColor: 'transparent',
                 flexDirection: 'row',
                 justifyContent:'space-between',
+                padding:10
               }}>
               <TouchableOpacity
                 style={{
-                  flex: 0.1,
-                  alignSelf: 'flex-start',
-                  //alignItems: 'center',
+                  flex: 0.1
                 }}
                 onPress={() => {
                   this.setState({
@@ -186,13 +185,11 @@ export default class Diary extends React.Component {
 
               <TouchableOpacity
                 style={{
-                  flex: 0.1,
-                  alignSelf: 'stretch',
-                  //alignItems: 'flex-end' 
+                  flex: 0.1
                 }}
                 onPress={this.takePicture}>
 
-                <Icon size={40} type = 'material-community' color='white' name='camera-iris' />
+                <Icon size={40} color='white' name='camera' />
 
               </TouchableOpacity>
             </View>

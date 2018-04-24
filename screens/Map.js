@@ -30,10 +30,8 @@ componentDidMount() {
 
   const { params } = this.props.navigation.state;
   const address = params.address;
-
   this.fetchAddress(address);
 }
-
 
   fetchAddress = (address) => {
     const key = 'AIzaSyClulqjPepQjs9IWY8qfUlcUIHeFyr_2Ys';
@@ -65,7 +63,6 @@ componentDidMount() {
     else {
       let location = await Location.getCurrentPositionAsync({enableHighAccuracy:false});
       this.setState({
-
         latitude: location.coords.latitude,
         longitude: location.coords.longitude,
         title: "You are here"
@@ -94,7 +91,6 @@ componentDidMount() {
     })
   }
 
-
   render() {
 
     return (
@@ -114,35 +110,34 @@ componentDidMount() {
             }}
               title={this.state.title}/>
           </MapView>
-            <TextInput
-              onChangeText={(address) => this.setState({address})}
-              placeholder= 'Where to?'
-              style={styles.search}
+
+          <TextInput
+            onChangeText={(address) => this.setState({address})}
+            placeholder= 'Where to?'
+            style={styles.search}
+          />
+
+          <Button raised rounded
+            onPress={this.search}
+            buttonStyle={{
+              backgroundColor:'white',
+              padding: 10,
+              position: 'absolute',
+              left:0
+            }}
+            icon={{name:"search", color:'#007AFF'}}
             />
 
-            <Button raised rounded
-              onPress={this.search}
-              buttonStyle={{
-                backgroundColor:'white',
-                padding: 10,
-              //  bottom:0
-                position: 'absolute',
-                left:0
-              }}
-              icon={{name:"search", color:'#007AFF'}}
-              />
-
-            <Button raised rounded
-              onPress={this.getLocation}
-              buttonStyle={{
-                backgroundColor:'white',
-                //width: 50,
-                padding: 10,
-                position: 'absolute',
-                right:0
-              }}
-              icon={{name:"my-location", color:'#007AFF'}}
-            />
+          <Button raised rounded
+            onPress={this.getLocation}
+            buttonStyle={{
+              backgroundColor:'white',
+              padding: 10,
+              position: 'absolute',
+              right:0
+            }}
+            icon={{name:"my-location", color:'#007AFF'}}
+          />
 
         </View>
 
@@ -159,8 +154,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#fbfbfc',
   },
   search: {
-  //  position: 'absolute',
-  //  bottom:0,
     paddingLeft:'5%',
     height:40,
     margin: '5%',

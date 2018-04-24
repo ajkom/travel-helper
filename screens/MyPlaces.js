@@ -15,7 +15,6 @@ export default class MyPlaces extends React.Component {
   constructor(props) {
     super(props);
     this.state = {address: '', myplaces: []};
-
   }
 
   componentDidMount() {
@@ -108,12 +107,9 @@ export default class MyPlaces extends React.Component {
           />
 
           </View>
-
       </View>
     );
   }
-
-
 
 }
 

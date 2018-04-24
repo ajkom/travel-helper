@@ -83,7 +83,6 @@ export default class Finder extends React.Component {
           renderItem={this.renderItem}
           style={{width:'100%'}}
         />
-
     </View>
   )}
 }
@@ -93,6 +92,5 @@ const styles = StyleSheet.create({
       flex: 1,
       backgroundColor: '#f7f7f9',
       alignItems: 'center',
-      //justifyContent: 'center',
     },
 });

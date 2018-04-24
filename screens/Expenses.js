@@ -164,8 +164,6 @@ const styles = StyleSheet.create({
       flex: 1,
       backgroundColor: '#fbfbfc',
       alignItems: 'center',
-      //justifyContent: 'center',
-      //margin: '2%',
     },
     label: {
       fontSize:16,
@@ -174,6 +172,5 @@ const styles = StyleSheet.create({
       fontSize:16,
       textAlign: 'center',
       color: '#86939e'
-    //  margin:0
     }
 });

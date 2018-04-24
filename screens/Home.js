@@ -73,9 +73,11 @@ export default class Home extends React.Component {
 
   render() {
     const { navigate } = this.props.navigation;
-    // prevent page from loading before weather info is fetched
+
+    // prevent page from trying to load before weather info is fetched
     if (this.state.weather == null)
-      return null;
+      return <Text>Please, enable your location servces</Text>;
+      
     // get the window width value
     let width = Dimensions.get('window').width;
 
@@ -101,7 +103,6 @@ export default class Home extends React.Component {
           title="FIND NEARBY"
           buttonStyle={{
             width: 200,
-        //    backgroundColor:'#5d737e',
             backgroundColor:'#79b473'
 
           }}
@@ -126,8 +127,6 @@ export default class Home extends React.Component {
 
       </View>
 
-
-
     )
   }
 
@@ -137,9 +136,7 @@ const styles = StyleSheet.create({
     container: {
       flex: 1,
       backgroundColor: '#fbfbfc',
-      // d8dbe2
       alignItems: 'center',
-      //justifyContent: 'center',
     },
     weatherText: {
       fontSize:18,

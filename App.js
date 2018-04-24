@@ -11,12 +11,15 @@ import Finder from './screens/Finder.js';
 
 import { YellowBox } from 'react-native';
 
+// prevent annoying React warnings from showing in the app
   YellowBox.ignoreWarnings([
     'Warning: componentWillMount is deprecated',
     'Warning: componentWillReceiveProps is deprecated',
     'Warning: componentWillUpdate is deprecated'
   ]);
 
+
+// navigation settings
 const StackPlaces = StackNavigator({
   MyPlaces: {screen: MyPlaces},
   Map: {screen: Map},
@@ -65,7 +68,7 @@ const StackExpenses = StackNavigator({
     headerTitleStyle:{color: 'white'}
   }})
 
-
+// combine stack navigators into tabs
 const MyApp = TabNavigator({
   StackHome: {screen: StackHome},
   StackPlaces: {screen: StackPlaces},

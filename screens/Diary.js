@@ -123,15 +123,11 @@ export default class Diary extends React.Component {
 
   render() {
     const { navigate } = this.props.navigation;
-    //let width = Dimensions.get('window').width;
-
-
 
     return (
       <View style={styles.container}>
         <FlatList
           data={this.state.mynotes}
-          //style={{width: width}}
           keyExtractor={item => item.id.toString()}
           renderItem={this.renderItem}
         />
